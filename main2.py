@@ -17,35 +17,33 @@ print(smogon2)
 
 # Aplicar Análisis de Componentes Principales (PCA)
 pca = PCA(n_components=3)
-pca_result = pca.fit_transform(smogon2)
+resultados_pca = pca.fit_transform(smogon2)
 
 # Imprimir el número de filas y columnas del DataFrame original
 print("Número de filas y columnas del DataFrame original:", smogon2.shape)
 
 # Imprimir el número de filas y columnas de la matriz de componentes principales
-print("Número de filas y columnas de la matriz de componentes principales:", pca_result.shape)
+print("Número de filas y columnas de la matriz de componentes principales:", resultados_pca.shape)
 
 # Generar un nuevo DataFrame con la matriz de componentes principales
-pca_df = pd.DataFrame(data=pca_result, columns=['PCA1', 'PCA2', 'PCA3'])
+df_pca = pd.DataFrame(data=resultados_pca, columns=['PCA1', 'PCA2', 'PCA3'])
 print("Matriz de componentes principales:")
-print(pca_df)
+print(df_pca)
 
 # Realizar el agrupamiento con KMeans en las componentes principales
 n_clusters_pca = 5
 kmeans_pca = KMeans(n_clusters=n_clusters_pca)
-clusters_pca = kmeans_pca.fit_predict(pca_result)
+clusters_pca = kmeans_pca.fit_predict(resultados_pca)
 
 # Agregar los clusters al DataFrame de componentes principales
-pca_df['Cluster'] = clusters_pca
+df_pca['Cluster'] = clusters_pca
 
 # Generar un archivo CSV con la matriz de componentes principales y el cluster
-pca_df.to_csv('pca_clusters.csv', index=False)
+df_pca.to_csv('pca_clusters.csv', index=False)
 print("Archivo CSV guardado en: pca_clusters.csv")
 
 # Interpretar los clusters
 cluster_labels_pca = {i: f'Cluster {i+1}' for i in range(n_clusters_pca)}
-for cluster_id, label in cluster_labels_pca.items():
-    cluster_indices_pca = pca_df.index[pca_df['Cluster'] == cluster_id]
-    print(f"{label}: {len(cluster_indices_pca)} documentos")
-
-
+for id_cluster, labels in cluster_labels_pca.items():
+    indices_cluster_pca = df_pca.index[df_pca['Cluster'] == id_cluster]
+    print(f"{labels}: {len(indices_cluster_pca)} documentos")
