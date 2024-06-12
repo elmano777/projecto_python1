@@ -10,7 +10,7 @@ stop_words = set(stopwords.words('english'))
 
 custom_stop_words = stop_words.union({
     'power', 'accuracy', 'user', 'target', 'pp', 'moves', 'the', 'to', 'is', 'on', 'by', 'pokemon', 'battle',
-    'spot', 'singles', 'doubles', 'gen', 'other', 'gens'
+    'spot', 'singles', 'doubles', 'gen', 'other', 'gens', "ability", "abilities",
 })
 
 cluster_names = {
