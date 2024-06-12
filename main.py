@@ -13,6 +13,27 @@ custom_stop_words = stop_words.union({
     'spot', 'singles', 'doubles', 'gen', 'other', 'gens'
 })
 
+cluster_names = {
+    0: "Movimientos de Curación y Apoyo",
+    1: "Movimientos de Tipo Bicho y Volador",
+    2: "Movimientos de Curación y Estados",
+    3: "Movimientos de Tipo Roca y Tierra",
+    4: "Movimientos de Alteración de Estadísticas y Sustitutos",
+    5: "Movimientos de Tipo Lucha y Golpes Críticos",
+    6: "Movimientos de Tipo Planta",
+    7: "Movimientos Psíquicos y de Alteración de Estadísticas",
+    8: "Movimientos de Tipo Agua y Hielo",
+    9: "Movimientos de Tipo Volador y Acero",
+    10: "Movimientos de Tipo Dragón y Fuego",
+    11: "Movimientos de Preparación y Alta Potencia",
+    12: "Movimientos de Drenaje y Tipo Planta",
+    13: "Movimientos de Acumulación y Veneno",
+    14: "Movimientos de Envenenamiento",
+    15: "Movimientos de Tipo Agua y Hielo",
+    16: "Movimientos de Tipo Bicho",
+    17: "Movimientos de Parálisis y Tipo Eléctrico"
+}
+
 # Convertir el conjunto de stop words a una lista
 custom_stop_words = list(custom_stop_words)
 
@@ -46,14 +67,16 @@ clusters = kmeans.fit_predict(matriz_tfidf)
 # Agregar los clusters al DataFrame
 tfidf['Cluster'] = clusters
 
+# Mapear los nombres de los clusters
+tfidf['Cluster Name'] = tfidf['Cluster'].map(cluster_names)
+
 # Generar un archivo de valores separado por comas (CSV) que contenga su matriz tfidf y el cluster
 tfidf.to_csv('tfidf_clusters.csv', index=False)
 print("Archivo CSV guardado en: 'tfidf_clusters.csv'")
 
 # Interpretar los clusters
-cluster_labels = {i: f'Cluster {i+1}' for i in range(n_clusters)}
 for cluster_id in range(n_clusters):
-    print(f"\nInterpretando el {cluster_labels[cluster_id]}:")
+    print(f"{cluster_names[cluster_id]}:")
     cluster_data = tfidf[tfidf['Cluster'] == cluster_id]
-    top_terms = cluster_data.drop(columns=['Cluster']).mean().sort_values(ascending=False).head(10)
-    print("Términos más comunes:", top_terms.index.tolist())
+    top_terms = cluster_data.drop(columns=['Cluster', 'Cluster Name']).mean().sort_values(ascending=False).head(10)
+    print(top_terms.index.tolist())
