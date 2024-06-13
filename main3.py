@@ -51,7 +51,7 @@ print("Matriz TF-IDF:")
 print(tfidf)
 
 # Realizar el agrupamiento con KMeans
-n_clusters = 5  # Seleccionar el número de clusters deseado
+n_clusters = 5
 kmeans = KMeans(n_clusters=n_clusters)
 clusters = kmeans.fit_predict(matriz_tfidf)
 
