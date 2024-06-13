@@ -6,7 +6,7 @@ from sklearn.cluster import KMeans
 smogon2 = pd.read_csv('tfidf_clusters.csv')
 
 # Descartar la columna del cluster
-smogon2.drop(columns=['Cluster'], inplace=True)
+smogon2.drop(columns=['Cluster Name',"Cluster"], inplace=True)
 print("DataFrame después de descartar la columna del cluster:")
 print(smogon2)
 
@@ -31,7 +31,7 @@ print("Matriz de componentes principales:")
 print(df_pca)
 
 # Realizar el agrupamiento con KMeans en las componentes principales
-n_clusters_pca = 5
+n_clusters_pca = 18
 kmeans_pca = KMeans(n_clusters=n_clusters_pca)
 clusters_pca = kmeans_pca.fit_predict(resultados_pca)
 

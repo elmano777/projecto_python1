@@ -8,12 +8,13 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
-custom_stop_words = stop_words.union({
+palabras_inutiles = stop_words.union({
     'power', 'accuracy', 'user', 'target', 'pp', 'moves', 'the', 'to', 'is', 'on', 'by', 'pokemon', 'battle',
-    'spot', 'singles', 'doubles', 'gen', 'other', 'gens', "ability", "abilities",
+    'spot', 'singles', 'doubles', 'gen', 'other', 'gens', "ability", "abilities", '10', '20'
+    '30', '40', '50', '60', '70', '80', '90', '100'
 })
 
-cluster_names = {
+cluster_nombres = {
     0: "Movimientos de Curación y Apoyo",
     1: "Movimientos de Tipo Bicho y Volador",
     2: "Movimientos de Curación y Estados",
@@ -35,14 +36,14 @@ cluster_names = {
 }
 
 # Convertir el conjunto de stop words a una lista
-custom_stop_words = list(custom_stop_words)
+palabras_inutiles_lista = list(palabras_inutiles)
 
 # Cargar los datos del archivo CSV
 smogon = pd.read_csv('smogon.csv')
 analizar = smogon['moves']
 
 # Generar la matriz TF-IDF utilizando unigramas y bigramas
-vectorizador = TfidfVectorizer(ngram_range=(1, 2), stop_words=custom_stop_words, max_df=0.85, min_df=2)
+vectorizador = TfidfVectorizer(ngram_range=(1, 2), stop_words=palabras_inutiles_lista, max_df=0.85, min_df=2)
 matriz_tfidf = vectorizador.fit_transform(analizar)
 
 # Mostrar el número total de tokens (elementos de su vocabulario) que tiene su matriz tf-idf
@@ -68,7 +69,7 @@ clusters = kmeans.fit_predict(matriz_tfidf)
 tfidf['Cluster'] = clusters
 
 # Mapear los nombres de los clusters
-tfidf['Cluster Name'] = tfidf['Cluster'].map(cluster_names)
+tfidf['Cluster Name'] = tfidf['Cluster'].map(cluster_nombres)
 
 # Generar un archivo de valores separado por comas (CSV) que contenga su matriz tfidf y el cluster
 tfidf.to_csv('tfidf_clusters.csv', index=False)
@@ -76,7 +77,7 @@ print("Archivo CSV guardado en: 'tfidf_clusters.csv'")
 
 # Interpretar los clusters
 for cluster_id in range(n_clusters):
-    print(f"{cluster_names[cluster_id]}:")
+    print(f"{cluster_nombres[cluster_id]}:")
     cluster_data = tfidf[tfidf['Cluster'] == cluster_id]
     top_terms = cluster_data.drop(columns=['Cluster', 'Cluster Name']).mean().sort_values(ascending=False).head(10)
     print(top_terms.index.tolist())
