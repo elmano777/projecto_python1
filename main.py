@@ -11,7 +11,7 @@ stop_words = set(stopwords.words('english'))
 palabras_inutiles = stop_words.union({
     'power', 'accuracy', 'user', 'target', 'pp', 'moves', 'the', 'to', 'is', 'on', 'by', 'pokemon', 'battle',
     'spot', 'singles', 'doubles', 'gen', 'other', 'gens', "ability", "abilities", '10', '20'
-    '30', '40', '50', '60', '70', '80', '90', '100'
+    '30', '40', '50', '60', '70', '80', '90', '100',
 })
 
 cluster_nombres = {
