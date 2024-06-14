@@ -52,7 +52,7 @@ print("Matriz TF-IDF:")
 print(tfidf)
 
 # Realizar el agrupamiento con KMeans
-n_clusters = 18  # Seleccionar el número de clusters deseado
+n_clusters = 20  # Seleccionar el número de clusters deseado
 kmeans = KMeans(n_clusters=n_clusters)
 clusters = kmeans.fit_predict(matriz_tfidf)
 
@@ -74,11 +74,9 @@ for i, centroide in enumerate(centroides):
 
 # Agregar los clusters al DataFrame con los nombres descriptivos
 tfidf['Cluster'] = [nombres_clusters[cluster] for cluster in clusters]
+tfidf["URL"] = smogon3["url"]
 
 # Generar un archivo CSV con la matriz TF-IDF y el cluster
 tfidf.to_csv("clusters_tfidf2.csv", index=False)
 print("Archivo CSV guardado en: clusters_tfidf2.csv")
-
-# Interpretar los clusters
-for nombre_cluster, indices_cluster in tfidf.groupby('Cluster')['Cluster']:
-    print(f"{nombre_cluster}")
+print(tfidf)
